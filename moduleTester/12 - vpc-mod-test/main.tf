@@ -1,5 +1,6 @@
 module "samplecheck_vpc" {
-  source       = "../../11 -  module-terraform-aws-vpc"
+  # source       = "../../11 -  module-terraform-aws-vpc" // this is local refrence bad practise
+  source       = "git::https://github.com/ChaitanyaVamsi/TerraformModules.git//11-module-terraform-aws-vpc?ref=main" // refrence form github
   vpc_cidr     = var.vpc_cidr
   project_name = var.project_name
   environment  = var.environment
