@@ -14,8 +14,6 @@ resource "aws_vpc_peering_connection" "default" {
     #  you can seamlessly reach EC2 instances across VPCs using private DNS names, not just IPs.
     # Private IP: 10.0.1.10
     # Private DNS: ip-10-0-1-10.ec2.internal - we can use this also to ping
-
-
   }
 
   requester {

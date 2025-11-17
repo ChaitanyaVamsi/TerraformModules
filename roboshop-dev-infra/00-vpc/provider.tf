@@ -8,9 +8,9 @@ terraform {
 
 
   backend "s3" {
-    bucket       = "teraform-state-repo"
-    key          = "roboshop-dev"
-    region       = "ap-south-1"
+    bucket       = "dev-infra-rs"
+    key          = "roboshop-dev-vpc"
+    region       = "us-east-1"
     use_lockfile = true
     encrypt      = true
   }
@@ -20,7 +20,7 @@ terraform {
 
 provider "aws" {
   # Configuration options
-  region = "ap-south-1"
+  region = "us-east-1"
 }
 
 # refer : https://developer.hashicorp.com/terraform/language/backend/s3

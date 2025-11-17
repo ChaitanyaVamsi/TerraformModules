@@ -15,9 +15,9 @@ output "public_subnet" {
 }
 
 output "private_subnet" {
-  value = module.samplecheck_vpc.pubic_subnet_id
+  value = module.samplecheck_vpc.private_subnet_id
 }
 
 output "database_subnet" {
-  value = module.samplecheck_vpc.pubic_subnet_id
+  value = module.samplecheck_vpc.database_subnet_id
 }

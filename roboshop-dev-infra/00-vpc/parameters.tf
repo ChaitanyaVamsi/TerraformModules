@@ -3,7 +3,7 @@
 resource "aws_ssm_parameter" "vpc_id" {
   name  = "/${var.project_name}/${var.environment}/vpc_id"
   type  = "String"
-  value = module.samplecheck_vpc.vpc_id_module
+  value = module.samplecheck_vpc.vpc_id_module // here vpc_id_module is a output in vpc module
 }
 
 resource "aws_ssm_parameter" "public_subnet_ids" {
