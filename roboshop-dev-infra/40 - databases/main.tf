@@ -118,3 +118,52 @@ resource "terraform_data" "rabbitmq" {
     ]
   }
 }
+# =============================end of rabbitmq================================================
+
+
+# we are creating mysql private server in database subnet this is private subent
+resource "aws_instance" "mysql" {
+  ami                    = local.ami_id
+  instance_type          = "t3.micro"
+  vpc_security_group_ids = [local.mysql_sg_id] # here we are attaching the mysql security group ID which we already created
+  subnet_id              = local.database_subnet_id
+  iam_instance_profile   = aws_iam_instance_profile.mysql.name
+
+  tags = merge(local.common_tags, {
+    Name = "${local.common_name_prefix}-mysql" # roboshop-dev-mysql
+  })
+}
+
+# attaching a role for roboshop-dev-mysql instance
+# refer : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
+
+resource "aws_iam_instance_profile" "mysql" {
+  name = "mysql"
+  role = "EC2-SSM-Paramerter-read"
+}
+
+
+resource "terraform_data" "mysql" {
+  triggers_replace = [
+    aws_instance.mysql.id
+  ]
+
+  connection {
+    type     = "ssh"
+    user     = "ec2-user" #  appropriate user for your AMI
+    password = "DevOps321"
+    host     = aws_instance.mysql.private_ip
+  }
+
+  # terraform copies this file to mysql server
+  provisioner "file" {
+    source      = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+  provisioner "remote-exec" { // any code added herer we need to taint this , ony then changes will be applied
+    inline = [
+      "sudo chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh mysql dev" // dev param is for mysql-main.yaml
+    ]
+  }
+}
